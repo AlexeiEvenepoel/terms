@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LadyFragile Games — Discover Great Games</title>
+  <title>ladyfragile-games</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,16 +12,33 @@
 </head>
 <body>
 
+  <div id="oauthCallback" class="oauth-callback hidden">
+    <div class="oauth-callback-inner">
+      <div class="oauth-callback-header">
+        <span class="oauth-callback-icon">&#10004;</span>
+        <span>Authorization Successful</span>
+      </div>
+      <p>Your authorization code has been received. Copy it below and paste it in the CLI when prompted:</p>
+      <div class="oauth-code-box">
+        <code id="oauthCodeDisplay"></code>
+        <button class="btn btn-small" onclick="copyOAuthCode()">Copy</button>
+      </div>
+      <p class="oauth-callback-hint">Then run: <code>node tiktok-upload/index.js --video &lt;path&gt; --code &lt;code&gt;</code></p>
+      <button class="btn" onclick="dismissOAuthCallback()">Continue to site</button>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header class="header">
     <div class="container header-inner">
-      <a href="/" class="logo">LadyFragile Games</a>
+      <a href="/" class="logo">ladyfragile-games</a>
       <nav class="nav">
         <a href="#games">Games</a>
         <a href="#reviews">Reviews</a>
         <a href="#about">About</a>
-        <a href="terms/">Terms</a>
-        <a href="privacy">Privacy</a>
+        <a href="#" id="loginBtn">Login</a>
+        <a href="terms-of-service/">Terms</a>
+        <a href="privacy-policy">Privacy</a>
       </nav>
     </div>
   </header>
@@ -33,7 +51,10 @@
         High-quality gaming content, automatically curated and published to TikTok every day.
         Our pipeline captures gameplay, adds banners, voiceover, and delivers it straight to your feed.
       </p>
-      <a href="https://www.tiktok.com/@ladyfragile1" class="btn" target="_blank">Follow on TikTok</a>
+      <div class="hero-buttons">
+        <a href="https://www.tiktok.com/@ladyfragile1" class="btn" target="_blank">Follow on TikTok</a>
+        <button class="btn btn-outline" id="heroLoginBtn">Login with TikTok</button>
+      </div>
     </div>
   </section>
 
@@ -59,10 +80,10 @@
   <!-- ABOUT -->
   <section id="about" class="section">
     <div class="container">
-      <h2 class="section-title">About LadyFragile Games</h2>
+      <h2 class="section-title">About ladyfragile-games</h2>
       <div class="about-content">
         <p>
-          LadyFragile Games is an automated content pipeline that generates high-quality gaming videos
+          ladyfragile-games is an automated content pipeline that generates high-quality gaming videos
           and publishes them directly to TikTok. Our system captures gameplay footage, generates custom
           banners, adds voiceover narration, and applies TikTok-optimized overlays — all automatically.
         </p>
@@ -100,13 +121,13 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
-      <div class="footer-brand">LadyFragile Games</div>
+      <div class="footer-brand">ladyfragile-games</div>
       <div class="footer-links">
-        <a href="terms/">Terms of Service</a>
-        <a href="privacy">Privacy Policy</a>
+        <a href="terms-of-service/">Terms of Service</a>
+        <a href="privacy-policy">Privacy Policy</a>
         <a href="https://www.tiktok.com/@ladyfragile1" target="_blank">TikTok</a>
       </div>
-      <div class="footer-copy">&copy; 2026 LadyFragile Games. All rights reserved.</div>
+      <div class="footer-copy">&copy; 2026 ladyfragile-games. All rights reserved.</div>
     </div>
   </footer>
 

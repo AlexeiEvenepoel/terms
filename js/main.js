@@ -1,6 +1,10 @@
 (function() {
   'use strict';
 
+  const TIKTOK_CLIENT_KEY = 'awk1x8wosci65mtq';
+  const REDIRECT_URI = 'https://ladyfragile-gamestt.netlify.app/';
+  const SCOPES = 'video.upload,video.publish';
+
   const GAMES = [
     { name: 'Cyberpunk 2077 Ultimate Edition', img: 'images/cyberpunk-2077.png', slug: 'cyberpunk-2077' },
     { name: 'Elden Ring Deluxe Edition',       img: 'images/elden-ring.png', slug: 'elden-ring' },
@@ -49,7 +53,51 @@
     return name.split(' ').slice(0, 2).map(w => w[0]).join('');
   }
 
+  function handleOAuthCallback() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (!code) return;
+
+    const display = document.getElementById('oauthCodeDisplay');
+    const box = document.getElementById('oauthCallback');
+    if (display && box) {
+      display.textContent = code;
+      box.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Clean the URL without reloading
+    const url = new URL(window.location);
+    url.searchParams.delete('code');
+    url.searchParams.delete('state');
+    window.history.replaceState({}, '', url);
+  }
+
+  function getLoginUrl() {
+    const state = 'login_' + Math.random().toString(36).slice(2);
+    return 'https://www.tiktok.com/v2/auth/authorize/?' +
+      'client_key=' + encodeURIComponent(TIKTOK_CLIENT_KEY) +
+      '&scope=' + encodeURIComponent(SCOPES) +
+      '&response_type=code' +
+      '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+      '&state=' + encodeURIComponent(state);
+  }
+
   function init() {
+    // OAuth callback handling
+    handleOAuthCallback();
+
+    // Login button handlers
+    const loginBtns = document.querySelectorAll('#loginBtn, #heroLoginBtn');
+    loginBtns.forEach(btn => {
+      if (btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.open(getLoginUrl(), '_blank', 'width=600,height=800');
+        });
+      }
+    });
+
     const gamesGrid = document.getElementById('gamesGrid');
     if (gamesGrid) {
       gamesGrid.innerHTML = GAMES.map(game => `
@@ -85,3 +133,20 @@
 
   document.addEventListener('DOMContentLoaded', init);
 })();
+
+function copyOAuthCode() {
+  const code = document.getElementById('oauthCodeDisplay');
+  if (!code) return;
+  navigator.clipboard.writeText(code.textContent).catch(() => {});
+  const btn = document.querySelector('.oauth-code-box .btn');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }
+}
+
+function dismissOAuthCallback() {
+  const box = document.getElementById('oauthCallback');
+  if (box) box.classList.add('hidden');
+}
